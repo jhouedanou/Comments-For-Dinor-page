@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Like Counts</title>
+    </head>
+
+    <body>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Like Count</th>
+                </tr>
+            </thead>
+
+            <tbody id="likeCountsTableBody">
+                <!-- Les lignes seront ajoutées dynamiquement par le JS -->
+            </tbody>
+        </table>
+
+        <div id="pagination"></div>
+
+        <!-- SDK Facebook -->
+        <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.8&appId=votreAppId"></script>
+
+        <!-- Code JS pour récupérer les données -->
+        <script>
+
+    // Code JS précédent pour récupérer les like_count dans un tableau
+
+    // Afficher les pages 
+    let currentPage = 1;
+    let itemsPerPage = 10;
+
+    function displayPage(items, wrapper, rowsPerPage) {
+      wrapper.innerHTML = ""; // Reset
+
+      let pageCount = Math.ceil(items.length / rowsPerPage);
+      for (let i = 0; i < pageCount; i++) {
+        let btn = paginationButton(i+1, items);
+        wrapper.appendChild(btn);
+      }
+    }
+
+    function paginationButton(page, items) {
+      let button = document.createElement('button');
+      button.innerText = page;
+
+      if (currentPage == page) button.classList.add('active');
+
+      button.addEventListener('click', function() {
+        currentPage = page;
+        displayLikeCounts(items, currentPage, itemsPerPage);
+
+        let currentBtn = document.querySelector('.pagenumbers button.active');
+        currentBtn.classList.remove('active');
+
+        button.classList.add('active');
+      });
+
+      return button;
+    }
+    
+    // Afficher les like_count d'une page donnée
+    function displayLikeCounts(items, page, rowsPerPage) {
+      let tableBody = document.querySelector('#likeCountsTableBody');
+
+      let pageIndex = page - 1;
+      let pageItems = items.slice(pageIndex * rowsPerPage, (pageIndex + 1) * rowsPerPage);
+
+      tableBody.innerHTML = "";
+      for (let i = 0; i < pageItems.length; i++) {
+        let row = `<tr>
+          <td>${pageItems[i]}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+      }
+    }
+
+    // Appel initial
+    displayPage(likeCounts, document.querySelector('#pagination'), itemsPerPage);
+    displayLikeCounts(likeCounts, currentPage, itemsPerPage);
+
+  </script>
+
+    </body>
+</html>
