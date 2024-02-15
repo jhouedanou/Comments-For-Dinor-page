@@ -8,8 +8,7 @@ post_id = "716403620672105"
 access_token = "EAAKTECZAmD8ABO0DpiyF0TKihwn5sRuGIyTbFwZBjN1ubbve5waxSKqTRHSTQtemOPjJBSM2qNus2jyVDckN5RTzMy8xiceZA3tjXHhxbYQrvTXFXxgsRB01J8cNVBLgxsVtHM5iIf3DoNBgwrq5gspeGXI28ZCOIT2GwiRxdJ6wlAtIvfizpydB8E6ECTzZBXtJaYvK2e44SWvfC7K03kZAgcz56edkhpti961rcn"
 
 
-url = f"https://graph.facebook.com/v19.0/{page_id}_{post_id}/comments?access_token={access_token}"
-url = f"https://graph.facebook.com/v19.0/{page_id}_{post_id}/comments?fields=from,created_time,message,like_count&access_token={access_token}"
+url = f"https://graph.facebook.com/v19.0/{page_id}_{post_id}/comments?limit=500&fields=from,message,like_count&access_token={access_token}"
 
 response = requests.request("GET", url)
 
@@ -23,7 +22,6 @@ print(data)
 def get_comment(comment):
     return {
         "name": comment["id"],
-        "time": comment["created_time"],
         "message": comment["message"],
         "likes": comment["like_count"],
     }
